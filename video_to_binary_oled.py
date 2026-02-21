@@ -41,4 +41,22 @@ def frame_to_binary(frame):
 
     return binary_frame
 
+with open(binary, 'wb') as f:
+    frame_index = 0
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        if frame_index % frame_skip == 0:
+            binary_frame = frame_to_binary(frame)
+            f.write(binary_frame.tobytes())
+            print(f"Processed frame {frame_index}/{frame_count}")
+
+        frame_index += 1
+cap.release()
+print(f"Binary file created: {binary}")
+print("Conversion complete!")
+print("Total frames processed:", frame_index // frame_skip)
+
 
